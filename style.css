@@ -103,9 +103,3 @@ body {
     width: 150px;
     text-align: center;
 }
-
-@media (width < 769px) {
-body{
-background-color: white
-}
-}
