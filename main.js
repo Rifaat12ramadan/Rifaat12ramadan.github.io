@@ -1,126 +1,128 @@
-let pieces = document.querySelector(".battery-content .pieces");
-
-let battery_status = document.createElement("div");
-battery_status.className = "battery-level";
-battery_status.dataset.battery = "charge";
+let cards = document.querySelectorAll(".cards .card");
+let back = document.querySelectorAll(".cards .card .back");
+let result = document.querySelector(".result");
 
 
-navigator.getBattery().then((ele) => {
+let images = ["/images/apple.jpg", "/images/amazon.jpg", "/images/facebook.jpg", "/images/google.png", "/images/microsoft.png", "/images/samsung.png", "/images/apple.jpg", "/images/amazon.jpg", "/images/facebook.jpg", "/images/google.png", "/images/microsoft.png", "/images/samsung.png"];
 
-    // Default :
-    if (ele.charging) {
-        battery_status.textContent = "Charging...";
-        document.body.append(battery_status);
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
+    randomImages();
+}
 
-    // When charge status change :
-    ele.addEventListener("chargingchange", () => {
-        battery_status.remove();
+function randomImages() {
+    for (let i = 0; i < back.length; i++) {
 
-        if (ele.charging) {
-            battery_status.textContent = "Charging...";
-            document.body.append(battery_status);
-        }
+        back[i].style.backgroundImage = `url(${images[i]})`;
+        back[i].setAttribute("image-type", images[i].slice(8, images[i].indexOf(".")));
+        back[i].style.backgroundPosition = "center";
+        back[i].style.backgroundSize = "cover";
+        back[i].style.transform = "rotateY(180deg)";
+        console.log(back[i]);
+    }
+}
 
+
+let matched = 0;
+let opened = 0;
+let openedCards = [];
+let moves = 0;
+
+function startTheGame() {
+    shuffleArray(images);
+
+    cards.forEach((card) => {
+        card.addEventListener("click", () => {
+            if (card.classList.contains("opened")) {
+                return false;
+            } else {
+    
+                opened +=1;
+                if(opened > 2){
+                    return false;
+                } else {
+    
+                    card.style.transform = "rotateY(180deg)";
+                    card.style.transition = "all 1s";
+                    card.classList.add("opened");
+                    openedCards.push(card);
+                }
+                if(opened === 2){
+                    setTimeout(() => {
+                        checkMatch(openedCards);
+                    }, 2000);
+                    moves+=1;
+                }
+            }
+        });
     });
+}
 
-    // Default :
-    let text_level = document.createElement("div");
-    text_level.className = "battery-level";
-    text_level.dataset.battery = "level";
+function checkMatch(openedCards){
 
-    text_level.textContent = `${Math.round(ele.level * 100)}%`;
-    document.body.append(text_level);
 
-    for (let i = 0; i < Math.floor(ele.level * 10); i++) {
-        let piece = document.createElement("div");
-        pieces.append(piece);
 
-        if (Math.round(ele.level * 100) < 30) {
-            piece.className = "poor";
-        }
-        if (Math.round(ele.level * 100) < 50 && Math.round(ele.level * 100) >= 30) {
-            piece.className = "normal";
-        }
-        if (Math.round(ele.level * 100) < 70 && Math.round(ele.level * 100) >= 50) {
-            piece.className = "good";
-        }
-        if (Math.round(ele.level * 100) <= 100 && Math.round(ele.level * 100) >= 70) {
-            piece.className = "excelent";
-        }
+    function isEven(number) {
+        return number % 2 === 0;
     }
+        
+    let newCards = [];
+    if(isEven(openedCards.length)){
+        newCards = openedCards.slice(openedCards.length - 2, openedCards.length );
+    }
+    
+    let children = [];
 
+        if (newCards[0] !== undefined && newCards[1] !== undefined){
 
-    // When battery level change : 
-    ele.addEventListener("levelchange", () => {
-        text_level.remove();
+            for (let i = 0; i < newCards.length; i++) {
 
-        if (
-            Math.round(ele.level * 100) === 10 ||
-            Math.round(ele.level * 100) === 20 ||
-            Math.round(ele.level * 100) === 30 ||
-            Math.round(ele.level * 100) === 40 ||
-            Math.round(ele.level * 100) === 50 ||
-            Math.round(ele.level * 100) === 60 ||
-            Math.round(ele.level * 100) === 70 ||
-            Math.round(ele.level * 100) === 80 ||
-            Math.round(ele.level * 100) === 90 ||
-            Math.round(ele.level * 100) === 100) {
-
-            let piece = document.createElement("div");
-            if (ele.charging) {
-                pieces.append(piece);
+            if (children.length < 2) {
+                children.push(newCards[i].querySelector(".back"));
+            }
             }
         }
 
-        let getpiece = document.querySelectorAll(".battery-content .pieces div");
-        // First Option :
-        if (Math.round(ele.level * 100) < 30) {
-            getpiece.forEach((ele) => {
-                ele.className = "poor";
-            });
-        }
 
-        // Second Option :
-        if (Math.round(ele.level * 100) < 50 && Math.round(ele.level * 100) >= 30) {
-            getpiece.forEach((ele) => {
-                ele.className = "normal";
-            });
-        }
+        for(let i = 0; i < children.length; i++){
 
-        // Third Option:
-        if (Math.round(ele.level * 100) < 70 && Math.round(ele.level * 100) >= 50) {
-            getpiece.forEach((ele) => {
-                ele.className = "good";
-            });
-        }
-
-        // Fourth Option :
-        if (Math.round(ele.level * 100) <= 100 && Math.round(ele.level * 100) >= 70) {
-            getpiece.forEach((ele) => {
-                ele.className = "excelent";
-            });
-        }
-
-        if (
-            Math.round(ele.level * 100) === 9 ||
-            Math.round(ele.level * 100) === 19 ||
-            Math.round(ele.level * 100) === 29 ||
-            Math.round(ele.level * 100) === 39 ||
-            Math.round(ele.level * 100) === 49 ||
-            Math.round(ele.level * 100) === 59 ||
-            Math.round(ele.level * 100) === 69 ||
-            Math.round(ele.level * 100) === 79 ||
-            Math.round(ele.level * 100) === 89 ||
-            Math.round(ele.level * 100) === 99) {
-            let getpiece = document.querySelectorAll(".battery-content .pieces div");
-            if (!ele.charging) {
-                pieces.removeChild(getpiece[getpiece.length - 1]);
+            if (children[0].getAttribute("image-type") === children[1].getAttribute("image-type")){
+                
+                newCards[i].textContent = "";
+                matched += 1;
+                openedCards = [];
+                if(matched === 12){
+                    showResult(moves);
+                }
+                opened = 0;
+            } 
+            else {
+               newCards[i].style.transform = "rotateY(0deg)";
+               newCards[i].classList.remove("opened");
+               opened = 0;
             }
         }
+}
+    
+    
 
-        text_level.textContent = `${Math.round(ele.level * 100)}%`;
-        document.body.append(text_level);
-    });
+function showResult(moves){
+    let createElement = document.createElement("h3");
+    createElement.textContent = `Congratulation You Got it ${moves}/6`;
+    let input = document.createElement("input");
+    input.type = "submit";
+    input.value = "Start Again";
+    result.appendChild(createElement);
+    result.appendChild(input);
+    input.onclick = restart;
+}
 
-});
+function restart() {
+    location.reload();
+}
+
+startTheGame();
