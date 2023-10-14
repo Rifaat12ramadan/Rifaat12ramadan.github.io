@@ -14,16 +14,6 @@ body  {
 .cards {
     width: 80%;
     height: 80%;
-   /*
-   width: fit-content;
-    height: 80%;
-    display: grid;
-    grid-template-columns: repeat(4, 200px) ;
-    grid-template-rows: repeat(3, 200px) ;
-    grid-template-areas: "first4 first4 first4 first4"
-                         "second4 second4 second4 second4"
-                         "last4 last4 last4 last4" ;
-    */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -35,21 +25,8 @@ body  {
     perspective: 800px;
     transform-style: preserve-3d;
     width: calc(95% / 4);
-    /*width: 100%;*/
     margin-top: 15px;
 }
-/*
-.cards .first4 {
-    grid-area: "first4";
-    
-}
-.cards .second4 {
-    grid-area: "second4";
-}
-.cards .last4 {
-    grid-area: "last4";
-}
-*/
 .cards .card div {
     position: absolute;
     display: flex;
@@ -63,7 +40,7 @@ body  {
 }
 
 .cards .card .front {
-    background-image: url("/profileyoutube.png");
+    background-image: url("/images/profileyoutube.png");
     background-position: center;
     background-size: cover;
 }
@@ -103,5 +80,4 @@ body  {
     .cards {
         width: 100%;
     }
-    /* I should change the height of each card to be able add new rows */
 }
