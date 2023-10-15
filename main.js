@@ -129,7 +129,7 @@ function checkMatch(openedCards) {
 
 function showResult(moves) {
     let createElement = document.createElement("h3");
-    createElement.textContent = `Congratulation You Got it ${moves}/6`;
+    createElement.textContent = `Congratulation You Got it 6/${moves}`;
     let input = document.createElement("input");
     input.type = "submit";
     input.value = "Start Again";
