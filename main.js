@@ -46,7 +46,6 @@ function startTheGame() {
             back[i].style.backgroundPosition = "center";
             back[i].style.backgroundSize = "cover";
             back[i].style.transform = "rotateY(180deg)";
-            console.log(back[i]);
         }
     }
 
